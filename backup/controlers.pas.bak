@@ -1,0 +1,77 @@
+unit Controlers;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils,Controls,ExtCtrls,Spin, StdCtrls,Transformation;
+
+procedure GetControls (Numb : Integer);
+
+var
+  ArrayOfProp: array of TControl;
+  CPanel: ^TPanel;
+  WTop, WLeft : Integer;
+
+implementation
+
+procedure GetControls(Numb: Integer);
+var i : Integer;
+begin
+   case Numb of
+   1:
+     begin
+       ArrayOfProp[0] := TSpinEdit.Create(CPanel^);
+  with (ArrayOfProp[0] as TSpinEdit) do
+  begin
+    Parent := CPanel^;
+    Name := 'SpinEditPenSize';
+    top := WTop;
+    WTop += 30;
+    left := WLeft;
+    Width := 55;
+    Height := 23;
+    MinValue := 1;
+    ShowHint := True;
+    Hint := 'Размер контура';
+    Value := 1;
+    for i := 0 to High(Figures) do
+      if Figures[i].Selected then
+        Value := (Figures[i] as TGeometryFigure).PenWidth;
+    OnChange := @SpinEditPenSizeClick;
+    //Value := 1;
+  end;
+   GPenWidth := 1;
+   end;
+2:
+  ArrayOfProp[1] := TComboBox.Create(CPanel^);
+  with (ArrayOfProp[1] as TComboBox) do
+  begin
+    Parent := Form1.FPanel;
+    Name := 'ComboBoxPenStyle';
+    top := WTop;
+    WTop += 30;
+    left := WLeft;
+    Width := 62;
+    Height := 23;
+    ShowHint := True;
+    ReadOnly := True;
+    Hint := 'Стиль пера';
+    a[1] := '— — — — — ';
+    a[3] := '— - — - — ';
+    a[0] := '——————————';
+    a[4] := '— - - — - ';
+    a[2] := '          ';
+    Items.AddStrings(a);
+    Text := a[0];
+    GPenStyle := integer(psSolid);
+    for i := 0 to High(Figures) do
+      if Figures[i].Selected then
+        Text := a[(Figures[i] as TGeometryFigure).PenStyle];
+    OnChange := @ComboBoxPenStylClick;
+   end;
+end;
+
+end.
+

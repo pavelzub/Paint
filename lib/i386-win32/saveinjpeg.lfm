@@ -1,0 +1,73 @@
+object Form3: TForm3
+  Left = 461
+  Height = 147
+  Top = 120
+  Width = 330
+  BorderIcons = []
+  Caption = 'Form3'
+  ClientHeight = 147
+  ClientWidth = 330
+  LCLVersion = '1.0.12.0'
+  object EditWidth: TEdit
+    Left = 64
+    Height = 23
+    Top = 48
+    Width = 79
+    OnChange = EditWidthChange
+    OnKeyPress = EditWidthKeyPress
+    TabOrder = 0
+    Text = '500'
+  end
+  object EditHeigth: TEdit
+    Left = 183
+    Height = 23
+    Top = 48
+    Width = 84
+    OnChange = EditWidthChange
+    OnKeyPress = EditWidthKeyPress
+    TabOrder = 1
+    Text = '500'
+  end
+  object ComboBox1: TComboBox
+    Left = 200
+    Height = 23
+    Top = 240
+    Width = 109
+    ItemHeight = 15
+    ItemIndex = 0
+    Items.Strings = (
+      'Збс'
+      'Норм'
+      'Пойдет'
+      'Херовинько'
+      'Кирпич'
+    )
+    TabOrder = 2
+    Text = 'Збс'
+  end
+  object Panel1: TPanel
+    Left = 143
+    Height = 26
+    Top = 48
+    Width = 41
+    Caption = 'х'
+    TabOrder = 3
+  end
+  object Button1: TButton
+    Left = 136
+    Height = 48
+    Top = 88
+    Width = 57
+    Caption = 'ОК'
+    ModalResult = 1
+    TabOrder = 4
+  end
+  object Panel2: TPanel
+    Left = 66
+    Height = 26
+    Top = 16
+    Width = 206
+    Caption = 'Размеры'
+    TabOrder = 5
+  end
+end

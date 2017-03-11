@@ -1,0 +1,163 @@
+unit TopMenu;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils,Figure,Load,Tools,Transformation,History,Dialogs,SaveInJpeg ;
+
+procedure Save (Name: string; index: Integer);
+procedure Open (Name: string);
+procedure Transform (str: string);
+procedure UndoClick ;
+procedure ReDoClick ;
+procedure Swap (var Figure1, Figure2: TFigure);
+procedure DownClick ;
+procedure UpClick ;
+
+
+
+implementation
+
+
+// Сохранение
+procedure Save (Name: string; index : Integer);
+  var
+    f: Text;
+    i: integer;
+  begin
+    case index of
+    1: begin
+        AssignFile (f, Utf8ToAnsi (Name));
+        Rewrite (f);
+        Writeln (f, Signature);
+        for i := 0 to High (Figures) do begin
+          WriteLn (f, FigureToStr (Figures[i]));
+        end;
+        CloseFile (f);
+      end;
+    2: begin
+        Form3.ShowModal;
+        SaveJpeg(Name);
+      end;
+    end;
+  end;
+
+procedure Open (Name: string);
+  var
+    f: textfile;
+    s: string;
+  begin
+    AssignFile (f, Name);
+    Reset (f);
+    readln (f, s);
+    if s <> Signature then
+      Exit;
+    while not EOF (f) do begin
+      readln (f, s);
+      SetLength (Figures, Length (Figures) + 1);
+      Figures[High (Figures)] := StrToFigure (s);
+      if Figures[High(Figures)]= nil then SetLength(Figures,Length(Figures)-1);
+    end;
+    CloseFile (f);
+  end;
+
+//undo/redo
+procedure Transform (str: string) ;
+  var
+    s: string;
+    posi: integer;
+  begin
+    posi := pos (#13, str);
+    while posi <> 0 do begin
+      s := Copy (Str, 1, posi - 1);
+      SetLength (Figures, Length (Figures) + 1);
+      Figures[(High (Figures))] := StrToFigure (s);
+      Str := Copy (Str, posi + 1, Length (Str) - posi);
+      posi := pos (#13, str);
+    end;
+  end;
+
+procedure ReDoClick ;
+  var
+    i: integer;
+  begin
+    if DownPress then
+      exit;
+    if HistoryIndex = ((MaxHistoryIndex) mod 100) then
+      Exit
+    else
+      HistoryIndex := (HistoryIndex + 101) mod 100;
+    if HistoryIndex=SaveHistoryNumber then  SaveFlag.SaveNeed := False
+      else SaveFlag.SaveNeed := True;
+    for i := 0 to High (Figures) do
+      Figures[i].Free;
+    SetLength (Figures, 0);
+    Transform (Histor[HistoryIndex]);
+  end;
+
+procedure UndoClick ;
+  var
+    i: integer;
+  begin
+    if DownPress then
+      exit;
+    if HistoryIndex = (MinHistoryIndex mod 100) then
+      Exit;
+    HistoryIndex := (HistoryIndex + 99) mod 100;
+    if HistoryIndex=SaveHistoryNumber then SaveFlag.SaveNeed := False
+      else SaveFlag.SaveNeed := True;
+    for i := 0 to High (Figures) do
+      Figures[i].Free;
+    SetLength (Figures, 0);
+    Transform (Histor[HistoryIndex]);
+    IndexOfTranformer := -1;
+    if EndingTransformaton then begin
+      LastTool.Free;
+      LastTool := CurrentTool;
+      EndingTransformaton := False;
+    end;
+  end;
+
+//Слои
+procedure Swap (var Figure1, Figure2: TFigure);
+  var
+    Buf: TFigure;
+  begin
+    Buf := Figure1;
+    Figure1 := Figure2;
+    Figure2 := Buf;
+  end;
+
+procedure DownClick ;
+  var
+    i, j: integer;
+  begin
+    j := 0;
+    while (j <> High (Figures) + 1) and Figures[j].Selected do
+      Inc (j);
+    for  i := j to High (Figures) - 1 do begin
+      if Figures[i + 1].Selected then
+        Swap (Figures[i + 1], Figures[i]);
+    end;
+    Change.SaveNeed := True;
+  end;
+
+procedure UpClick ;
+  var
+    i, j: integer;
+  begin
+    Change.SaveNeed := True;
+    j := High (Figures);
+    while (j <> -1) and Figures[j].Selected do
+      Dec (j);
+    for  i := j downto 1 do begin
+      if Figures[i - 1].Selected then
+        Swap (Figures[i - 1], Figures[i]);
+    end;
+    Change.SaveNeed := True;
+  end;
+
+
+end.

@@ -1,0 +1,50 @@
+object Form2: TForm2
+  Left = 484
+  Height = 80
+  Top = 214
+  Width = 354
+  Caption = 'Сохранить?'
+  ClientHeight = 80
+  ClientWidth = 354
+  Color = clGradientActiveCaption
+  LCLVersion = '1.0.12.0'
+  object BtnYes: TButton
+    Left = 40
+    Height = 25
+    Top = 37
+    Width = 75
+    Caption = 'Да'
+    ModalResult = 6
+    OnClick = BtnYesClick
+    TabOrder = 0
+  end
+  object BtnNo: TButton
+    Left = 144
+    Height = 25
+    Top = 37
+    Width = 75
+    Caption = 'Нет'
+    ModalResult = 7
+    OnClick = BtnNoClick
+    TabOrder = 1
+  end
+  object BtnCancel: TButton
+    Left = 248
+    Height = 25
+    Top = 37
+    Width = 75
+    Caption = 'Отмена'
+    ModalResult = 2
+    OnClick = BtnCancelClick
+    TabOrder = 2
+  end
+  object Panel1: TPanel
+    Left = 16
+    Height = 25
+    Top = 7
+    Width = 328
+    BevelOuter = bvNone
+    Caption = 'Файл не был сохранен. Сохранить?'
+    TabOrder = 3
+  end
+end

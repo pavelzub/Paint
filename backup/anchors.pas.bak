@@ -1,0 +1,22 @@
+unit Anchors;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, Transformation, Graphics, ExtCtrls;
+
+type
+
+  TEditAction = procedure (APoint: MegaPoint; Int: integer) of object;
+  TAnchorAction = procedure (X, Y: integer) of object;
+
+  TAnchorMoving = record
+    Selected: boolean;
+    Action: TEditAction;
+    ind: integer;
+  end;
+implementation
+
+end.

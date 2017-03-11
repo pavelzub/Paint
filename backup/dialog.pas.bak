@@ -1,0 +1,56 @@
+unit Dialog;
+
+{$mode objfpc}{$H+}
+
+interface
+
+uses
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, StdCtrls,
+  ExtCtrls, Figure;
+
+type
+
+  { TForm2 }
+
+  TForm2 = class(TForm)
+    BtnYes: TButton;
+    BtnNo: TButton;
+    BtnCancel: TButton;
+    Panel1: TPanel;
+    procedure BtnNoClick (Sender: TObject);
+    procedure BtnYesClick (Sender: TObject);
+    procedure BtnCancelClick (Sender: TObject);
+  private
+    { private declarations }
+  public
+    { public declarations }
+  end;
+
+var
+  Form2: TForm2;
+  Activity: string;
+
+implementation
+
+uses Main;
+
+{$R *.lfm}
+
+{ TForm2 }
+
+procedure TForm2.BtnYesClick (Sender: TObject);
+  begin
+    Form2.Close;
+  end;
+
+procedure TForm2.BtnCancelClick (Sender: TObject);
+  begin
+    Form2.Close;
+  end;
+
+procedure TForm2.BtnNoClick (Sender: TObject);
+  begin
+    Form2.Close;
+  end;
+
+end.
